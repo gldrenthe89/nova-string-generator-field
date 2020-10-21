@@ -1,0 +1,47 @@
+{
+    "name": "gldrenthe89/nova-string-generator-field",
+    "description": "A Laravel Nova field for generating a random string. This can be used for a Text field and for a Password field.",
+    "keywords": [
+        "laravel",
+        "nova",
+        "password"
+    ],
+    "homepage": "https://github.com/gldrenthe89/nova-string-generator-field",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Geert Lucas Drenthe",
+            "email": "gl@drenthe.it",
+            "homepage": "https://github.com/gldrenthe89",
+            "role": "Developer"
+        }
+    ],
+    "repositories":[
+        {
+            "type": "composer",
+            "url": "https://nova.laravel.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.1.0",
+        "laravel/nova": "~3.0",
+        "illuminate/support": "^7.0|^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Gldrenthe89\\NovaStringGeneratorField\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Gldrenthe89\\NovaStringGeneratorField\\NovaStringGeneratorFieldServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
