@@ -1,5 +1,5 @@
 # Nova String Generation Field
-A Nova field which can genarate a string upon creating or updating
+A Nova field which can genarate a string upon creating or updating, this adds a string generator button and copy button to a Text or Password field.
 
 ## Installation:
 
@@ -10,8 +10,8 @@ composer require gldrenthe89/nova-string-generator-field
 ```
 
 ```php
-use Gldrenthe89\Gldrenthe89\NovaStringGeneratorField\NovaGenerateString;
-use Gldrenthe89\Gldrenthe89\NovaStringGeneratorField\NovaGeneratePassword;
+use Gldrenthe89\NovaStringGeneratorField\NovaGenerateString;
+use Gldrenthe89\NovaStringGeneratorField\NovaGeneratePassword;
 
 // Field which extends the default Nova Text field
 NovaGenerateString::make('String')
