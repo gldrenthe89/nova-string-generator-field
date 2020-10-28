@@ -14,5 +14,5 @@ class NovaGeneratePassword extends Password
      *
      * @var string
      */
-    public $component = 'generate-string';
+    public $component = 'generate-password';
 }

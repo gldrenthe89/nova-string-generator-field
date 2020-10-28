@@ -1,6 +1,15 @@
 # Nova String Generation Field
 A Nova field which can genarate a string upon creating or updating, this adds a string generator button and copy button to a Text or Password field.
 
+## Screenshot
+Demo with shown password.
+
+![Demo1](docs/demo.png)
+
+Demo with 'normal' hidden password.
+
+![Demo1](docs/demo2.png)
+
 ## Installation:
 
 You can install the package in to a Laravel app that uses Nova via composer:
