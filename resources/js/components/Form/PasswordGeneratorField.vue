@@ -16,8 +16,8 @@
         <div class="my-auto ml-3 cursor-pointer" v-on:click="switchVisibility();">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" :id="field.attribute.concat('VisibilityButton')" fill="#bacad6"><path d="M15 12c0 1.654-1.346 3-3 3s-3-1.346-3-3 1.346-3 3-3 3 1.346 3 3zm9-.449s-4.252 8.449-11.985 8.449c-7.18 0-12.015-8.449-12.015-8.449s4.446-7.551 12.015-7.551c7.694 0 11.985 7.551 11.985 7.551zm-7 .449c0-2.757-2.243-5-5-5s-5 2.243-5 5 2.243 5 5 5 5-2.243 5-5z"/></svg>
         </div>
-        <input type="button" class="btn btn-default btn-primary ml-3 cursor-pointer" value="Generate" :id="field.attribute.concat('GenerateButton')" v-on:click="generatePassword();">
-        <input type="button" class="btn btn-default btn-icon ml-3 cursor-pointer" value="Copy" :id="field.attribute.concat('CopyButton')" disabled="disabled" v-on:click="copyPassword();">
+        <input v-if="!isReadonly" type="button" class="btn btn-default btn-primary ml-3 cursor-pointer" v-bind:value="__('Generate')" :id="field.attribute.concat('GenerateButton')" v-on:click="generatePassword();">
+        <input type="button" class="btn btn-default btn-icon ml-3 cursor-pointer" v-bind:value="__('Copy')" :id="field.attribute.concat('CopyButton')" :disabled="!copyEnabled()" v-on:click="copyPassword();">
       </div>
     </template>
   </default-field>
@@ -36,6 +36,9 @@ export default {
   },
 
   methods: {
+    copyEnabled() {
+      return window.location.protocol === 'https:' && this.value.length > 0;
+    },
     generatePassword() {
       let chars = '';
       if (this.field.exclude_rules && this.field.exclude_rules.length > 0){
@@ -46,7 +49,7 @@ export default {
             && this.field.exclude_rules.includes('numbers')
             && this.field.exclude_rules.includes('uppercase')
             && this.field.exclude_rules.includes('lowercase')){
-          alert('Include at least one characters type! Symbols, Numbers, Lowercase, Uppercase');
+          alert(this.__('Include at least one characters type! Symbols, Numbers, Lowercase, Uppercase'));
           return false;
         }
 
@@ -77,14 +80,10 @@ export default {
       }
       this.value = pass;
 
-      if (window.location.protocol === 'https:') {
-        document.getElementById(this.field.attribute.concat('CopyButton')).disabled = false;
-      }
-
       let button = document.getElementById(this.field.attribute.concat('GenerateButton'));
-      button.value = 'Generated';
-      setTimeout(function () {
-        button.value = 'Regenerate'
+      button.value = this.__('Generated');
+      setTimeout(() => {
+        button.value = this.__('Regenerate');
       }, 750);
     },
     copyPassword() {
@@ -92,9 +91,9 @@ export default {
       let button = document.getElementById(this.field.attribute.concat('CopyButton'));
       if (fieldText.value.length > 0) {
         navigator.clipboard.writeText(fieldText.value);
-        button.value = "Copied";
-        setTimeout(function () {
-          button.value = 'Copy'
+        button.value = this.__('Copied');
+        setTimeout(() => {
+          button.value = this.__('Copy');
         }, 750);
       }
     },

@@ -23,8 +23,8 @@
               :value="suggestion"
           />
         </datalist>
-        <input type="button" class="btn btn-default btn-primary ml-3 cursor-pointer" value="Generate" :id="field.attribute.concat('GenerateButton')" v-on:click="generateString();">
-        <input type="button" class="btn btn-default btn-icon ml-3 cursor-pointer" value="Copy" :id="field.attribute.concat('CopyButton')" disabled="disabled" v-on:click="copyString();">
+        <input v-if="!isReadonly" type="button" class="btn btn-default btn-primary ml-3 cursor-pointer" v-bind:value="__('Generate')" :id="field.attribute.concat('GenerateButton')" v-on:click="generateString();">
+        <input type="button" class="btn btn-default btn-icon ml-3 cursor-pointer" v-bind:value="__('Copy')" :id="field.attribute.concat('CopyButton')" :disabled="!copyEnabled()" v-on:click="copyString();">
       </div>
     </template>
   </default-field>
@@ -63,6 +63,9 @@ export default {
   },
 
   methods: {
+    copyEnabled() {
+      return window.location.protocol === 'https:' && this.value.length > 0;
+    },
     generateString() {
       let chars = '';
       if (this.field.exclude_rules && this.field.exclude_rules.length > 0){
@@ -73,7 +76,7 @@ export default {
             && this.field.exclude_rules.includes('numbers')
             && this.field.exclude_rules.includes('uppercase')
             && this.field.exclude_rules.includes('lowercase')){
-          alert('Include at least one characters type! Symbols, Numbers, Lowercase, Uppercase');
+          alert(this.__('Include at least one characters type! Symbols, Numbers, Lowercase, Uppercase'));
           return false;
         }
 
@@ -104,14 +107,10 @@ export default {
       }
       this.value = string;
 
-      if (window.location.protocol === 'https:') {
-        document.getElementById(this.field.attribute.concat('CopyButton')).disabled = false;
-      }
-
       let button = document.getElementById(this.field.attribute.concat('GenerateButton'));
-      button.value = 'Generated';
-      setTimeout(function () {
-        button.value = 'Regenerate'
+      button.value = this.__('Generated');
+      setTimeout(() => {
+        button.value = this.__('Regenerate');
       }, 750);
     },
     copyString() {
@@ -119,9 +118,9 @@ export default {
       let button = document.getElementById(this.field.attribute.concat('CopyButton'));
       if (fieldText.value.length > 0) {
         navigator.clipboard.writeText(fieldText.value);
-        button.value = "Copied";
-        setTimeout(function () {
-          button.value = 'Copy'
+        button.value = this.__('Copied');
+        setTimeout(() => {
+          button.value = this.__('Copy');
         }, 750);
       }
     }
