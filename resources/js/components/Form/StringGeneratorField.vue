@@ -23,8 +23,8 @@
               :value="suggestion"
           />
         </datalist>
-        <input type="button" class="btn btn-default btn-primary ml-3 cursor-pointer" v-bind:value="__('Generate')" :id="field.attribute.concat('GenerateButton')" v-on:click="generateString();">
-        <input type="button" class="btn btn-default btn-icon ml-3 cursor-pointer" v-bind:value="__('Copy')" :id="field.attribute.concat('CopyButton')" disabled="disabled" v-on:click="copyString();">
+        <input v-if="!isReadonly" type="button" class="btn btn-default btn-primary ml-3 cursor-pointer" v-bind:value="__('Generate')" :id="field.attribute.concat('GenerateButton')" v-on:click="generateString();">
+        <input type="button" class="btn btn-default btn-icon ml-3 cursor-pointer" v-bind:value="__('Copy')" :id="field.attribute.concat('CopyButton')" :disabled="!copyEnabled()" v-on:click="copyString();">
       </div>
     </template>
   </default-field>
@@ -63,6 +63,9 @@ export default {
   },
 
   methods: {
+    copyEnabled() {
+      return window.location.protocol === 'https:' && this.value.length > 0;
+    },
     generateString() {
       let chars = '';
       if (this.field.exclude_rules && this.field.exclude_rules.length > 0){
@@ -103,10 +106,6 @@ export default {
         string += chars.charAt(i);
       }
       this.value = string;
-
-      if (window.location.protocol === 'https:') {
-        document.getElementById(this.field.attribute.concat('CopyButton')).disabled = false;
-      }
 
       let button = document.getElementById(this.field.attribute.concat('GenerateButton'));
       button.value = this.__('Generated');

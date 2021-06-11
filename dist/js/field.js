@@ -26839,6 +26839,9 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
   },
 
   methods: {
+    copyEnabled: function copyEnabled() {
+      return window.location.protocol === 'https:' && this.value.length > 0;
+    },
     generateString: function generateString() {
       var _this = this;
 
@@ -26878,10 +26881,6 @@ var _extends = Object.assign || function (target) { for (var i = 1; i < argument
         string += chars.charAt(i);
       }
       this.value = string;
-
-      if (window.location.protocol === 'https:') {
-        document.getElementById(this.field.attribute.concat('CopyButton')).disabled = false;
-      }
 
       var button = document.getElementById(this.field.attribute.concat('GenerateButton'));
       button.value = this.__('Generated');
@@ -26960,19 +26959,21 @@ var render = function() {
               )
             : _vm._e(),
           _vm._v(" "),
-          _c("input", {
-            staticClass: "btn btn-default btn-primary ml-3 cursor-pointer",
-            attrs: {
-              type: "button",
-              value: _vm.__("Generate"),
-              id: _vm.field.attribute.concat("GenerateButton")
-            },
-            on: {
-              click: function($event) {
-                return _vm.generateString()
-              }
-            }
-          }),
+          !_vm.isReadonly
+            ? _c("input", {
+                staticClass: "btn btn-default btn-primary ml-3 cursor-pointer",
+                attrs: {
+                  type: "button",
+                  value: _vm.__("Generate"),
+                  id: _vm.field.attribute.concat("GenerateButton")
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.generateString()
+                  }
+                }
+              })
+            : _vm._e(),
           _vm._v(" "),
           _c("input", {
             staticClass: "btn btn-default btn-icon ml-3 cursor-pointer",
@@ -26980,7 +26981,7 @@ var render = function() {
               type: "button",
               value: _vm.__("Copy"),
               id: _vm.field.attribute.concat("CopyButton"),
-              disabled: "disabled"
+              disabled: !_vm.copyEnabled()
             },
             on: {
               click: function($event) {
@@ -27280,6 +27281,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
   methods: {
+    copyEnabled: function copyEnabled() {
+      return window.location.protocol === 'https:' && this.value.length > 0;
+    },
     generatePassword: function generatePassword() {
       var _this = this;
 
@@ -27319,10 +27323,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         pass += chars.charAt(i);
       }
       this.value = pass;
-
-      if (window.location.protocol === 'https:') {
-        document.getElementById(this.field.attribute.concat('CopyButton')).disabled = false;
-      }
 
       var button = document.getElementById(this.field.attribute.concat('GenerateButton'));
       button.value = this.__('Generated');
@@ -27512,19 +27512,21 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _c("input", {
-            staticClass: "btn btn-default btn-primary ml-3 cursor-pointer",
-            attrs: {
-              type: "button",
-              value: _vm.__("Generate"),
-              id: _vm.field.attribute.concat("GenerateButton")
-            },
-            on: {
-              click: function($event) {
-                return _vm.generatePassword()
-              }
-            }
-          }),
+          !_vm.isReadonly
+            ? _c("input", {
+                staticClass: "btn btn-default btn-primary ml-3 cursor-pointer",
+                attrs: {
+                  type: "button",
+                  value: _vm.__("Generate"),
+                  id: _vm.field.attribute.concat("GenerateButton")
+                },
+                on: {
+                  click: function($event) {
+                    return _vm.generatePassword()
+                  }
+                }
+              })
+            : _vm._e(),
           _vm._v(" "),
           _c("input", {
             staticClass: "btn btn-default btn-icon ml-3 cursor-pointer",
@@ -27532,7 +27534,7 @@ var render = function() {
               type: "button",
               value: _vm.__("Copy"),
               id: _vm.field.attribute.concat("CopyButton"),
-              disabled: "disabled"
+              disabled: !_vm.copyEnabled()
             },
             on: {
               click: function($event) {
