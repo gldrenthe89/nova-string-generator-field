@@ -31,5 +31,16 @@ NovaGenerateString::make('String')
 NovaGeneratePassword::make('password'), // possible options are the same as above
 ```
 
+## Localization
+
+The translation file(s) can be published by using the following publish command:
+
+```bash
+php artisan vendor:publish --provider="Gldrenthe89\NovaStringGeneratorField\NovaStringGeneratorFieldServiceProvider" --tag="translations"
+```
+
+You can add your translations to `resources/lang/vendor/nova-string-generator-field/` by creating a new translations file with the locale name (ie `et.json`) and copying the JSON from the existing `en.json`.
+
+
 ## License:
 The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
