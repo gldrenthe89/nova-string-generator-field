@@ -1,24 +1,46 @@
 <template>
   <div :class="`text-${field.textAlign}`">
-    <template v-if="hasValue">
-      <div v-if="field.asHtml" v-html="field.value"></div>
-      <span v-else class="whitespace-no-wrap">{{ field.value }}</span>
+    <template v-if="fieldValue">
+      <CopyButton
+          v-if="fieldValue && field.copyable && !shouldDisplayAsHtml"
+          @click.prevent.stop="copy"
+          v-tooltip="__('Copy to clipboard')"
+      >
+        <span ref="theFieldValue">
+          {{ fieldValue }}
+        </span>
+      </CopyButton>
+
+      <span
+          v-else-if="fieldValue && !field.copyable && !shouldDisplayAsHtml"
+          class="text-90 whitespace-nowrap"
+      >
+        {{ fieldValue }}
+      </span>
+      <div
+          @click.stop
+          v-else-if="fieldValue && !field.copyable && shouldDisplayAsHtml"
+          v-html="fieldValue"
+      />
+      <p v-else>&mdash;</p>
     </template>
     <p v-else>&mdash;</p>
   </div>
 </template>
 
 <script>
+import { CopiesToClipboard, FieldValue } from '@/mixins'
+
 export default {
+  mixins: [CopiesToClipboard, FieldValue],
+
   props: ['resourceName', 'field'],
 
-  computed: {
-    /**
-     * Determine if the field has a value other than null.
-     */
-    hasValue() {
-      return this.field.value !== null
+  methods: {
+    copy() {
+      this.copyValueToClipboard(this.field.value)
     },
   },
 }
 </script>
+

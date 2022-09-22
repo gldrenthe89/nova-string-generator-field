@@ -5,7 +5,7 @@ namespace Gldrenthe89\NovaStringGeneratorField;
 use Illuminate\Support\ServiceProvider;
 use Laravel\Nova\Events\ServingNova;
 use Laravel\Nova\Nova;
-use OptimistDigital\NovaTranslationsLoader\LoadsNovaTranslations;
+use Outl1ne\NovaTranslationsLoader\LoadsNovaTranslations;
 
 class NovaStringGeneratorFieldServiceProvider extends ServiceProvider
 {

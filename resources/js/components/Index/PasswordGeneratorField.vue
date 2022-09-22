@@ -1,13 +1,13 @@
 <template>
-  <div :class="`text-${field.textAlign}`">
+    <div :class="`text-${field.textAlign}`">
     <span class="font-bold">
       &middot; &middot; &middot; &middot; &middot; &middot; &middot; &middot;
     </span>
-  </div>
+    </div>
 </template>
 
 <script>
 export default {
-  props: ['resourceName', 'field'],
+    props: ['resourceName', 'field'],
 }
 </script>

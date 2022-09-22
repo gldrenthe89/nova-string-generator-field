@@ -1,66 +1,64 @@
 <template>
-  <default-field :field="field" :errors="errors" :show-help-text="showHelpText">
-    <template slot="field">
-      <div class="flex">
-        <input
-            class="w-full form-control form-input form-input-bordered"
-            @input="handleChange"
-            :value="value"
-            :id="field.attribute"
-            :dusk="field.attribute"
-            v-bind="extraAttributes"
-            :disabled="isReadonly"
-            :list="`${field.attribute}-list`"
-        />
+    <DefaultField
+        :field="currentField"
+        :errors="errors"
+        :show-help-text="showHelpText"
+    >
+        <template #field>
+            <div class="flex">
+                <input
+                    v-bind="extraAttributes"
+                    class="w-full form-control form-input form-input-bordered"
+                    @input="handleChange"
+                    :value="value"
+                    :id="currentField.uniqueKey"
+                    :dusk="field.attribute"
+                    :disabled="currentlyIsReadonly"
+                />
 
-        <datalist
-            v-if="field.suggestions && field.suggestions.length > 0"
-            :id="`${field.attribute}-list`"
-        >
-          <option
-              :key="suggestion"
-              v-for="suggestion in field.suggestions"
-              :value="suggestion"
-          />
-        </datalist>
-        <input v-if="!isReadonly" type="button" class="btn btn-default btn-primary ml-3 cursor-pointer" v-bind:value="__('Generate')" :id="field.attribute.concat('GenerateButton')" v-on:click="generateString();">
-        <input type="button" class="btn btn-default btn-icon ml-3 cursor-pointer" v-bind:value="__('Copy')" :id="field.attribute.concat('CopyButton')" :disabled="!copyEnabled()" v-on:click="copyString();">
-      </div>
-    </template>
-  </default-field>
+                <input v-if="!isReadonly" type="button" class="ml-3 shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900 cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-9 px-3 shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900" v-bind:value="__('Generate')" :id="currentField.uniqueKey.concat('GenerateButton')" v-on:click="generateString();">
+                <input type="button" class="ml-3 shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900 cursor-pointer rounded text-sm font-bold focus:outline-none focus:ring ring-primary-200 dark:ring-gray-600 inline-flex items-center justify-center h-9 px-3 shadow relative bg-primary-500 hover:bg-primary-400 text-white dark:text-gray-900" v-bind:value="__('Copy')" :id="currentField.uniqueKey.concat('CopyButton')" :disabled="!copyEnabled()" v-on:click="copyString();">
+            </div>
+        </template>
+    </DefaultField>
 </template>
 
+
 <script>
-import { FormField, HandlesValidationErrors } from 'laravel-nova'
+import {
+    DependentFormField,
+    HandlesValidationErrors,
+} from 'laravel-nova'
+
 
 export default {
-  mixins: [HandlesValidationErrors, FormField],
+    mixins: [DependentFormField, HandlesValidationErrors],
 
-  computed: {
-    defaultAttributes() {
-      return {
-        type: this.field.type || 'text',
-        min: this.field.min,
-        max: this.field.max,
-        step: this.field.step,
-        pattern: this.field.pattern,
-        placeholder: this.field.placeholder || this.field.name,
-        class: this.errorClasses,
-      }
+    computed: {
+        defaultAttributes() {
+            return {
+                type: this.currentField.type || 'text',
+                placeholder: this.currentField.placeholder || this.field.name,
+                class: this.errorClasses,
+                min: this.currentField.min,
+                max: this.currentField.max,
+                step: this.currentField.step,
+                pattern: this.currentField.pattern,
+            }
+        },
+
+        extraAttributes() {
+            const attrs = this.currentField.extraAttributes
+
+            return {
+                // Leave the default attributes even though we can now specify
+                // whatever attributes we like because the old number field still
+                // uses the old field attributes
+                ...this.defaultAttributes,
+                ...attrs,
+            }
+        },
     },
-
-    extraAttributes() {
-      const attrs = this.field.extraAttributes
-
-      return {
-        // Leave the default attributes even though we can now specify
-        // whatever attributes we like because the old number field still
-        // uses the old field attributes
-        ...this.defaultAttributes,
-        ...attrs,
-      }
-    },
-  },
 
   methods: {
     copyEnabled() {
@@ -107,16 +105,17 @@ export default {
       }
       this.value = string;
 
-      let button = document.getElementById(this.field.attribute.concat('GenerateButton'));
+      let button = document.getElementById(this.currentField.uniqueKey.concat('GenerateButton'));
       button.value = this.__('Generated');
       setTimeout(() => {
         button.value = this.__('Regenerate');
+        this.copyString()
       }, 750);
     },
     copyString() {
-      let fieldText = document.getElementById(this.field.attribute);
-      let button = document.getElementById(this.field.attribute.concat('CopyButton'));
-      if (fieldText.value.length > 0) {
+      let fieldText = document.getElementById(this.currentField.uniqueKey);
+      let button = document.getElementById(this.currentField.uniqueKey.concat('CopyButton'));
+        if (fieldText.value.length > 0) {
         navigator.clipboard.writeText(fieldText.value);
         button.value = this.__('Copied');
         setTimeout(() => {
