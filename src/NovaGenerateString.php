@@ -3,9 +3,9 @@
 namespace Gldrenthe89\NovaStringGeneratorField;
 
 use Gldrenthe89\NovaStringGeneratorField\Traits\NovaGenerateStringTrait;
-use Laravel\Nova\Fields\Password;
+use Laravel\Nova\Fields\Text;
 
-class NovaGenerateString extends Password
+class NovaGenerateString extends Text
 {
     use NovaGenerateStringTrait;
 
