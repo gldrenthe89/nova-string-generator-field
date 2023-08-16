@@ -24,7 +24,7 @@
     ],
     "require": {
         "laravel/nova": "~4.0",
-        "illuminate/support": "^9.0",
+        "illuminate/support": "^10.0",
         "outl1ne/nova-translations-loader": "^5.0"
     },
     "autoload": {
